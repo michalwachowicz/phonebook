@@ -30,6 +30,20 @@ app.get("/api/persons", (_, response) => {
   response.json(people);
 });
 
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({ error: "content missing" });
+  }
+
+  const id = people.length > 0 ? Math.max(...people.map((p) => p.id)) + 1 : 0;
+  const person = { id, name: body.name, number: body.number };
+
+  people = people.concat(person);
+  response.json(person);
+});
+
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   const person = people.find((p) => p.id === id);
