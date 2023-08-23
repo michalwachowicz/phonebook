@@ -31,14 +31,20 @@ app.get("/api/persons", (_, response) => {
 });
 
 app.post("/api/persons", (request, response) => {
-  const body = request.body;
+  const { name, number } = request.body;
 
-  if (!body.name || !body.number) {
-    return response.status(400).json({ error: "content missing" });
+  if (!name || !number) {
+    return response.status(400).json({ error: "name or number missing" });
+  }
+
+  if (people.find((person) => person.name === name)) {
+    return response
+      .status(409)
+      .json({ error: `person with name ${name} already exists` });
   }
 
   const id = people.length > 0 ? Math.max(...people.map((p) => p.id)) + 1 : 0;
-  const person = { id, name: body.name, number: body.number };
+  const person = { id, name, number };
 
   people = people.concat(person);
   response.json(person);
