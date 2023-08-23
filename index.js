@@ -30,6 +30,17 @@ app.get("/api/persons", (_, response) => {
   response.json(people);
 });
 
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = people.find((p) => p.id === id);
+
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
+});
+
 app.get("/info", (_, response) => {
   const length = people.length;
   const date = new Date().toString();
