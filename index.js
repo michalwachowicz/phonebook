@@ -46,15 +46,9 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  // const id = Number(request.params.id);
-  // people = people.filter((person) => person.id !== id);
-  // response.status(204).end();
-});
-
-app.get("/info", (_, response) => {
-  // const length = people.length;
-  // const date = new Date().toString();
-  // response.send(`<p>Phonebook has info for ${length} people</p><p>${date}</p>`);
+  Person.findByIdAndDelete(request.params.id)
+    .then((_) => response.status(204).end())
+    .catch((error) => console.log(error));
 });
 
 const PORT = process.env.PORT || 3001;
