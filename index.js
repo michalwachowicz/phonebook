@@ -67,6 +67,16 @@ app.delete("/api/persons/:id", (request, response) => {
     .catch((error) => next(error));
 });
 
+app.get("/info", (_, response) => {
+  Person.find({}).then((people) => {
+    const length = people.length;
+    const date = new Date().toString();
+    response.send(
+      `<p>Phonebook has info for ${length} people</p><p>${date}</p>`
+    );
+  });
+});
+
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
